@@ -1,0 +1,8 @@
+# ignore all files in the build/ directory
+build/
+
+# ignore various auto-generated backup files
+*~
+.*.swp
+.*.un~
+
