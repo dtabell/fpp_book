@@ -28,7 +28,7 @@ This project includes the following directories and files:
   blank.txt       blank file (is this needed??)
   intro.txt       instructions that likely refer to the next two files
   make.bat        and are probably for
-  terminal.lnk    building on Windows.
+  terminal.lnk    building on Windows
 
 
  B U I L D   A N D   I N S T A L L
@@ -60,18 +60,18 @@ With CMake installed, do the following at a command-line prompt:
        $ cmake ..
 
      The default location for installed binaries will be (assuming you
-     have sufficient privileges) /usr/local/PTC/bin/. If you wish to
-     modify this location, then, for example, use
+     have sufficient privileges) /usr/local/PTC/bin/; for installed
+     libraries, it will be /usr/local/PTC/lib/. If you wish to modify
+     this location, then, for example, use
        $ cmake -DCMAKE_INSTALL_PREFIX=~/Projects/fpp_book ..
-     in which case the bbinaries will be installed in the directory
-     ~/Projects/fpp_book/PTC/bin.
+     in which case the binaries will be installed in the directory
+     ~/Projects/fpp_book/PTC/bin, and correspondingly for libraries.
 
   4. Build the libraries and executables:
        $ make
 
-  5. (Optional) Install the executables:
+  5. (Optional) Install the libraries and executables:
        $ make install
      or, if necessary,
        $ sudo make install
-
 
