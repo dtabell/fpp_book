@@ -39,3 +39,8 @@ endforeach (p)
 
 add_subdirectory(als)
 
+install(
+  TARGETS ${PTC_PROGRAMS}
+  DESTINATION PTC/bin
+)
+

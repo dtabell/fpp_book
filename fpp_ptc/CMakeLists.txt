@@ -79,3 +79,8 @@ add_library(ptc SHARED
   zzy_run_madx.f90
 )
 
+install(
+  TARGETS ptc LIBRARY
+  DESTINATION PTC/lib
+)
+

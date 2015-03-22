@@ -23,3 +23,8 @@ add_library(ptclattices SHARED
 
 target_link_libraries(ptclattices ptc)
 
+install(
+  TARGETS ptclattices LIBRARY
+  DESTINATION PTC/lib
+)
+
