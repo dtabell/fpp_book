@@ -75,3 +75,10 @@ With CMake installed, do the following at a command-line prompt:
      or, if necessary,
        $ sudo make install
 
+     If you do not perform the installation, you will find the binaries
+     in the directory
+       _path_to_/fpp_book/book_examples/
+     and the libraries in the directories
+       _path_to_/fpp_book/fpp_ptc/als/
+       _path_to_/fpp_book/book_examples/als/
+
