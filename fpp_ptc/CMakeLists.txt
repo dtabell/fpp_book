@@ -71,7 +71,7 @@ set(PTC_LIB_FILES
   St_pointers.f90
 )
 
-add_library(ptc SHARED
+add_library(ptc
   ${PTC_INCLUDE_FILES}
   ${PTC_LIB_FILES}
   ${FPP_LIB_FILES}
@@ -82,5 +82,6 @@ add_library(ptc SHARED
 install(
   TARGETS ptc LIBRARY
   DESTINATION PTC/lib
+  ARCHIVE DESTINATION PTC/lib
 )
 

@@ -17,7 +17,7 @@ set(PTC_LATTICE_FILES
   z_als_lattice.f90
 )
 
-add_library(ptclattices SHARED
+add_library(ptclattices
   ${PTC_LATTICE_FILES}
 )
 
@@ -26,5 +26,6 @@ target_link_libraries(ptclattices ptc)
 install(
   TARGETS ptclattices LIBRARY
   DESTINATION PTC/lib
+  ARCHIVE DESTINATION PTC/lib
 )
 
