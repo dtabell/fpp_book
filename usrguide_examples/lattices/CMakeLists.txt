@@ -1,6 +1,6 @@
 #######################################################################
 ##
-## CMakeLists.txt : top level
+## CMakeLists.txt : lattice source files for additional examples
 ##
 ## This project contains the code and examples for the book
 ##
@@ -13,16 +13,19 @@
 ##
 #######################################################################
 
-cmake_minimum_required (VERSION 2.8)
-enable_language(Fortran)
-
-project (fpp_book)
-
-include_directories(
-  ${CMAKE_CURRENT_BINARY_DIR}/fpp_ptc
+set(USRGUIDE_LATTICE_FILES
+  z_psr_lattice.f90
 )
 
-add_subdirectory(fpp_ptc)
-add_subdirectory(book_examples)
-add_subdirectory(usrguide_examples)
+add_library(usrguide_lattices
+  ${USRGUIDE_LATTICE_FILES}
+)
+
+target_link_libraries(usrguide_lattices ptc)
+
+install(
+  TARGETS usrguide_lattices LIBRARY
+  DESTINATION PTC/lib
+  ARCHIVE DESTINATION PTC/lib
+)
 

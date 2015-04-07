@@ -22,6 +22,7 @@ This project includes the following directories and files:
 
   fpp_ptc         directory for the FPP/PTC library source files
   book_examples   directory for all the example source files
+  libug_examples  directory for additional example source files
 
   CMakeLists.txt  top-level file used by the CMake build system
 
@@ -62,10 +63,17 @@ With CMake installed, do the following at a command-line prompt:
      The default location for installed binaries will be (assuming you
      have sufficient privileges) /usr/local/PTC/bin/; for installed
      libraries, it will be /usr/local/PTC/lib/. If you wish to modify
-     this location, then, for example, use
+     this location, do so by setting the variable CMAKE_INSTALL_PREFIX
+     on the cmake command line. Thus, for example, execute
        $ cmake -DCMAKE_INSTALL_PREFIX=~/Projects/fpp_book ..
-     in which case the binaries will be installed in the directory
-     ~/Projects/fpp_book/PTC/bin, and correspondingly for libraries.
+     to have the binaries installed in the directory
+       ~/Projects/fpp_book/PTC/bin
+     and correspondingly for libraries.
+
+     By default, the libraries created will all be static libraries.
+     To have shared libraries built, add
+       -DBUILD_SHARED_LIBS=ON
+     to the cmake command line.
 
   4. Build the libraries and executables:
        $ make

@@ -1,6 +1,6 @@
 #######################################################################
 ##
-## CMakeLists.txt : top level
+## CMakeLists.txt : PTC executables for additional examples
 ##
 ## This project contains the code and examples for the book
 ##
@@ -13,16 +13,20 @@
 ##
 #######################################################################
 
-cmake_minimum_required (VERSION 2.8)
-enable_language(Fortran)
-
-project (fpp_book)
-
-include_directories(
-  ${CMAKE_CURRENT_BINARY_DIR}/fpp_ptc
+set(USRGUIDE_PROGRAMS
+  ptc_geometry
+  ptc_splitting
 )
 
-add_subdirectory(fpp_ptc)
-add_subdirectory(book_examples)
-add_subdirectory(usrguide_examples)
+foreach (p ${USRGUIDE_PROGRAMS})
+  add_executable(${p} "${p}.f90")
+  target_link_libraries(${p} ptc usrguide_lattices)
+endforeach (p)
+
+add_subdirectory(lattices)
+
+install(
+  TARGETS ${USRGUIDE_PROGRAMS}
+  DESTINATION PTC/bin
+)
 
