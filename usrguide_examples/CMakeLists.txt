@@ -14,6 +14,7 @@
 #######################################################################
 
 set(USRGUIDE_PROGRAMS
+  psr_chromaticity
   ptc_geometry
   ptc_splitting
 )
