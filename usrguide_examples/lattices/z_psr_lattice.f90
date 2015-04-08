@@ -55,8 +55,9 @@ logical(lp), intent(in), optional :: useRBends
 logical(lp), intent(in), optional :: sextupolesON
 
 logical(lp) :: useRB, sextON
-real(dp) :: ang, brho, kd, kf, Larc
-type(fibre) :: b, d1, d2, qd, qf
+real(dp) :: ang, B0, brho, Larc
+real(dp) :: kqd, kqf, ksd, ksf
+type(fibre) :: b, d1, d2, d3, d4, qd, qf, sd, sf
 type(layout) :: cell0, cellT, cellL
 !-----------------------------------
 
@@ -79,7 +80,8 @@ madlength = .false.
 
 ang = (twopi * 36.d0 / 360.d0)
 Larc = 2.54948d0
-brho = 1.2d0 * (Larc / ang)
+B0 = 1.2d0
+brho = B0 * (Larc / ang)
 call set_mad(brho = brho, method = 2, step = 10)
 madkind2 = drift_kick_drift
 
