@@ -1,4 +1,4 @@
-#######################################################################
+########################################################################
 ##
 ## ReadMe.txt : build instructions and other notes
 ##
@@ -11,7 +11,7 @@
 ##
 ## (c) E. Forest, 2015
 ##
-#######################################################################
+########################################################################
 
  M A N I F E S T
 -----------------
@@ -28,15 +28,15 @@ This project includes the following directories and files:
 
   blank.txt       blank file (is this needed??)
   intro.txt       instructions that likely refer to the next two files
-  make.bat        and are probably for
-  terminal.lnk    building on Windows
+  make.bat          and are probably for
+  terminal.lnk      building on Windows
 
 
  B U I L D   A N D   I N S T A L L
 -----------------------------------
 
 The build instructions given here have been tested only on
-  Mac OS 10.9.5
+  Mac OS 10.9.5 and Linux .
 With any luck, they will work on other systems.
 
 To build the code for this project, you can use the cross-platform build
@@ -64,7 +64,8 @@ With CMake installed, do the following at a command-line prompt:
      have sufficient privileges) /usr/local/PTC/bin/; for installed
      libraries, it will be /usr/local/PTC/lib/. If you wish to modify
      this location, do so by setting the variable CMAKE_INSTALL_PREFIX
-     on the cmake command line. Thus, for example, execute
+     on the cmake command line. Thus, for example, configure the build
+     by executing
        $ cmake -DCMAKE_INSTALL_PREFIX=~/Projects/fpp_book ..
      to have the binaries installed in the directory
        ~/Projects/fpp_book/PTC/bin
@@ -84,9 +85,11 @@ With CMake installed, do the following at a command-line prompt:
        $ sudo make install
 
      If you do not perform the installation, you will find the binaries
-     in the directory
-       _path_to_/fpp_book/book_examples/
+     in the directories
+       _path_to_/fpp_book/build/book_examples/
+       _path_to_/fpp_book/build/usrguide_examples/
      and the libraries in the directories
-       _path_to_/fpp_book/fpp_ptc/als/
-       _path_to_/fpp_book/book_examples/als/
+       _path_to_/fpp_book/build/fpp_ptc/
+       _path_to_/fpp_book/build/book_examples/als/
+       _path_to_/fpp_book/build/usrguide_examples/lattices/
 
