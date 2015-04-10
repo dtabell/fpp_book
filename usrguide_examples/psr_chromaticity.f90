@@ -18,62 +18,177 @@ end interface
 type(layout), pointer :: PSR
 type(internal_state), target :: state
 type(c_damap) :: id, one_turn_map
+type(c_normal_form) :: normal_form
 type(real_8), dimension(6) :: y
 real(dp), dimension(6) :: closed_orbit
 real(dp), dimension(6,6) :: matrix_part
-real(dp) :: relpdev, pprec
-integer :: i, mapOrder
+real(dp), dimension(5) :: dval
+real(dp), dimension(2,5) :: zco, nu
+real(dp), dimension(2) :: chrom1, chrom2
+real(dp) :: circumference, pprec
+integer :: i, j, mapOrder
+character(len=8) :: ans
+character(len=2) :: rs, wwo
+logical(lp) :: useRB, sextON
 
 !-----------------------------------
 state = nocavity0
 mapOrder = 2
 pprec = 1.d-6  ! print precision
 
+! values of \delta
+dval(1) =  0.d+0
+dval(2) =  1.d-3
+dval(3) = -1.d-3
+dval(4) =  1.d-4
+dval(5) = -1.d-4
+
 call ptc_ini_no_append
 call append_empty_layout(m_u)
 PSR => m_u%start
 
-call build_full_PSR(PSR, useRBends=.false., sextupolesON=.false.)
+! Construct the PSR with rectangular bends, or sector bends?
+write(*, '(a)', advance='no') &
+  "Use rectangular bends (instead of sector bends)?: "
+read (*, '(l)') useRB
+!read (*, '(a)') ans
+!write(*, '(a1,a,a1)') "=", ans, "="
+!ans = adjustl(trim(ans))
+!write(*, '(a1,a,a1)') "=", ans, "="
+!if (ans == "y" .or. ans == "Y") then
+!  useRB = .true.
+!else
+!  useRB = .false.
+!endif
+if (useRB) then
+  rs = "r"
+  write(*, '(a)') "  Will use rectangular bends."
+else
+  rs = "s"
+  write(*, '(a)') "  Will use sector bends."
+endif
+
+! Turn on the sextupoles?
+write(*, '(a)', advance='no') "Turn on the sextupoles?: "
+read (*, '(l)') sextON
+if (sextON) then
+  wwo = "w/"
+  write(*, '(a)') "  Will turn on the sextupoles."
+else
+  wwo = "no"
+  write(*, '(a)') "  Will turn off the sextupoles."
+endif
+write(*,*) ""
+
+call build_full_PSR(PSR, useRBends=useRB, sextupolesON=sextON)
 
 call init_all(state, mapOrder, 0)
 call alloc(id)
 call alloc(one_turn_map)
+call alloc(normal_form)
 call alloc(y)
 
-relpdev = 0.0
-closed_orbit(5) = relpdev
-call find_orbit_x(PSR, closed_orbit, state, 1.e-5_dp, fibre1=1)
-
-write(6,*) " closed orbit at delta = ", relpdev
-write(6,*) closed_orbit(1:6)
-
 id = 1  ! identity map
-write(6,*) " id%v(1) "
-call print(id%v(1),6)
 
-y = closed_orbit + id
-write(6,*) " y(1) = closed_orbit(1) + id%v(1) "
-call print(y(1), 6)
-call propagate(PSR, y, state, fibre1=1)
+closed_orbit(1:6) = zero
+call find_orbit_x(PSR, closed_orbit, state, 1.e-9_dp, fibre1=1)
+circumference = PSR%T%end%s(1)
 
-one_turn_map = y  ! promote the six polymorphs to Taylor maps
+! loop over designated values of the relative momentum deviation
+do j = 1, 5
+  write(6,*) ""
+  write(6,'(a,es8.2e1,a)') " ====================== delta = ", dval(j)," ======================"
+  closed_orbit(5) = dval(j)
+  ! compute the closed orbit
+  call find_orbit_x(PSR, closed_orbit, state, 1.e-9_dp, fibre1=1)
+  zco(:,j) = closed_orbit(1:2)
+  write(6,'(a,2(2x,es14.7e2),2x,es8.2e1)') " closed orbit: ", closed_orbit(1:2), closed_orbit(5)
+  ! compute the one-turn map
+  y = closed_orbit + id
+  call propagate(PSR, y, state, fibre1=1)
+  one_turn_map = y  ! promote the six polymorphs to a (6-D) Taylor map
+  ! convert to normal form
+  call c_normal(one_turn_map, normal_form)
+  nu(:,j) = normal_form%tune(1:2)
+enddo
 
-call print(one_turn_map, 6, pprec)
+!call print(one_turn_map, 6, pprec)
 
 closed_orbit = y
 matrix_part = one_turn_map
 
-write(6,*) " ";
-write(6,*) " === constant and linear parts of the map ===";
-write(6,'(a16,6(1x,g12.5))') " closed orbit = ", closed_orbit(1:6)
-do i = 1, 6
-  write(6,'(a5,i1,a6,6(1x,g12.5))') " row(",i,") --> ", matrix_part(i, 1:6)
-enddo
-
 call kill(id)
 call kill(one_turn_map)
+call kill(normal_form)
 call kill(y)
 
+! =============== write out summary of results ===============
+! header
+write(6,*) ""
+write(6,'(a)', advance='no') " ========================= "
+write(6,'(a1,a,a2,a)', advance='no') rs, "bends, ", wwo, " sextupoles"
+write(6,'(a)') " ========================="
+write(6,'(4x,a,6x,a,11x,a,12x,a,11x,a)') "delta", "co_X / C", "co_Px", "nu_X", "nu_Y"
+! report delta, closed-orbit, and tunes
+do j = 1, 5
+  write(6,'(2x,es8.2e1,2(2x,e15.8e2),2(2x,e13.7e1))') &
+    dval(j), zco(1,j) / circumference, zco(2,j), nu(:,j)
+enddo
+! report chromaticities
+!   first-order
+do i = 1, 2
+  chrom1(i) = (nu(i,2) - nu(i,3)) / (dval(2) - dval(3))
+enddo
+!   second-order
+do i = 1, 2
+  chrom2(i) = (nu(i,2) + nu(i,3) - 2 * nu(i,1)) / (dval(2) ** 2)
+enddo
+write(6,'(a)') ""
+write(6,'(a)') " chromaticities (computed numerically)"
+write(6,'(a,1x,f8.4,2x,f8.4)') "   order 1:", chrom1(:)
+write(6,'(a,1x,f6.2,4x,f6.2)') "   order 2:", chrom2(:)
+
+write(6,'(a)') ""
 call ptc_end
 end program psr_chromaticity
+
+
+!! Convert an ASCII string to lowercase letters
+!! adapted from http://www.star.le.ac.uk/~cgp/fortran.html
+!! original author: Clive Page
+!function to_lower(strIn) result(strOut)
+!implicit none
+!
+!character(len=*), intent(in) :: strIn
+!character(len=len(strIn)) :: strOut
+!integer :: i, j
+!
+!do i = 1, len(strIn)
+!  j = iachar(strIn(i:i))
+!  if (j >= iachar("A") .and. j <= iachar("Z")) then
+!    strOut(i:i) = achar(iachar(strIn(i:i)) + 32)
+!  else
+!    strOut(i:i) = strIn(i:i)
+!  end if
+!end do
+!end function to_lower
+!
+!
+!function is_yes(answer) result(yesQ)
+!implicit none
+!
+!character(len=*), intent(in) :: answer
+!character(len=len(answer)) :: lca
+!logical :: yesQ
+!
+!lca = to_lower(answer)
+!
+!yesQ = .false.
+!if (lca .eq. "y" .or. lca .eq. "yes"  .or. &
+!    lca .eq. "t" .or. lca .eq. "true" .or. &
+!    lca .eq. "1") then
+!  yesQ = .true.
+!endif
+!
+!end function is_yes
 

@@ -82,7 +82,7 @@ ang = (twopi * 36.d0 / 360.d0)
 Larc = 2.54948d0
 B0 = 1.2d0
 brho = B0 * (Larc / ang)
-call set_mad(brho = brho, method = 2, step = 10)
+call set_mad(brho = brho, method = 2, step = 40)
 madkind2 = matrix_kick_matrix
 
 if (useRB) then
