@@ -83,7 +83,7 @@ Larc = 2.54948d0
 B0 = 1.2d0
 brho = B0 * (Larc / ang)
 call set_mad(brho = brho, method = 2, step = 10)
-madkind2 = drift_kick_drift
+madkind2 = matrix_kick_matrix
 
 if (useRB) then
   kqd = -1.92d0 / brho
@@ -103,8 +103,8 @@ d3 = drift("D3", 1.48646d0)
 d4 = drift("D4", 0.30d0)
 qf = quadrupole("QF", 0.5d0, kqf)
 qd = quadrupole("QD", 0.5d0, kqd)
-sf = quadrupole("SF", 0.5d0, ksf)
-sd = quadrupole("SD", 0.5d0, ksd)
+sf = sextupole("SF", 0.5d0, ksf)
+sd = sextupole("SD", 0.5d0, ksd)
 if (useRB) then
   b  = rbend("B", Larc, ang)
 else
@@ -124,8 +124,10 @@ else
   PSR = 10 * cell0
 endif
 PSR = .ring.PSR
-
 call survey(PSR)
+
+PSR%name = " Los Alamos PSR "
+
 end subroutine build_full_PSR
 
 
