@@ -25,18 +25,21 @@ real(dp), dimension(6,6) :: matrix_part
 real(dp), dimension(5) :: dval
 real(dp), dimension(2,5) :: zco, nu
 real(dp), dimension(2) :: chrom1, chrom2
+real(dp), dimension(2) :: C100, C101, C102, C010
 real(dp) :: circumference, pprec
-integer :: i, j, mapOrder
-character(len=8) :: ans
+integer :: i, j, ndeltas, mapOrder
+character(len=8) :: answer
 character(len=2) :: rs, wwo
 logical(lp) :: useRB, sextON
 
 !-----------------------------------
 state = nocavity0
-mapOrder = 2
+mapOrder = 3
 pprec = 1.d-6  ! print precision
 
 ! values of \delta
+ndeltas = 5
+dval = zero
 dval(1) =  0.d+0
 dval(2) =  1.d-3
 dval(3) = -1.d-3
@@ -51,11 +54,9 @@ PSR => m_u%start
 write(*, '(a)', advance='no') &
   "Use rectangular bends (instead of sector bends)?: "
 read (*, '(l)') useRB
-!read (*, '(a)') ans
-!write(*, '(a1,a,a1)') "=", ans, "="
-!ans = adjustl(trim(ans))
-!write(*, '(a1,a,a1)') "=", ans, "="
-!if (ans == "y" .or. ans == "Y") then
+!read (*, '(a)') answer
+!write(*, '(a1,a)') "=", answer
+!if (is_yes(answer)) then
 !  useRB = .true.
 !else
 !  useRB = .false.
@@ -95,7 +96,7 @@ call find_orbit_x(PSR, closed_orbit, state, 1.e-9_dp, fibre1=1)
 circumference = PSR%T%end%s(1)
 
 ! loop over designated values of the relative momentum deviation
-do j = 1, 5
+do j = 1, ndeltas
   write(6,*) ""
   write(6,'(a,es8.2e1,a)') " ====================== delta = ", dval(j)," ======================"
   closed_orbit(5) = dval(j)
@@ -110,6 +111,19 @@ do j = 1, 5
   ! convert to normal form
   call c_normal(one_turn_map, normal_form)
   nu(:,j) = normal_form%tune(1:2)
+  if (j .eq. 1) then
+    !call print(normal_form%n, 6, pprec)
+    !call print(normal_form%n%v(1), 6, pprec)
+    !call print(normal_form%n%v(3), 6, pprec)
+    C100(1) = normal_form%n%v(1).sub."10000"
+    C101(1) = normal_form%n%v(1).sub."10001"
+    C102(1) = normal_form%n%v(1).sub."10002"
+    C010(1) = normal_form%n%v(1).sub."01000"
+    C100(2) = normal_form%n%v(3).sub."00100"
+    C101(2) = normal_form%n%v(3).sub."00101"
+    C102(2) = normal_form%n%v(3).sub."00102"
+    C010(2) = normal_form%n%v(3).sub."00010"
+  endif
 enddo
 
 !call print(one_turn_map, 6, pprec)
@@ -129,12 +143,14 @@ write(6,'(a)', advance='no') " ========================= "
 write(6,'(a1,a,a2,a)', advance='no') rs, "bends, ", wwo, " sextupoles"
 write(6,'(a)') " ========================="
 write(6,'(4x,a,6x,a,11x,a,12x,a,11x,a)') "delta", "co_X / C", "co_Px", "nu_X", "nu_Y"
+!
 ! report delta, closed-orbit, and tunes
 do j = 1, 5
   write(6,'(2x,es8.2e1,2(2x,e15.8e2),2(2x,e13.7e1))') &
     dval(j), zco(1,j) / circumference, zco(2,j), nu(:,j)
 enddo
-! report chromaticities
+!
+! report numerically computed chromaticities
 !   first-order
 do i = 1, 2
   chrom1(i) = (nu(i,2) - nu(i,3)) / (dval(2) - dval(3))
@@ -147,6 +163,25 @@ write(6,'(a)') ""
 write(6,'(a)') " chromaticities (computed numerically)"
 write(6,'(a,1x,f8.4,2x,f8.4)') "   order 1:", chrom1(:)
 write(6,'(a,1x,f6.2,4x,f6.2)') "   order 2:", chrom2(:)
+!
+! report chromaticities computed from the map
+!   first-order
+do i = 1, 2
+  chrom1(i) = -C101(i) / C010(i) / twopi
+enddo
+!   second-order
+do i = 1, 2
+  chrom2(i) = -(C102(i) + 0.5 * C100(i) * (C101(i) / C010(i))**2) &
+               / (pi * C010(i))
+enddo
+write(6,'(a)') ""
+write(6,'(a)') " chromaticities (computed from the map)"
+write(6,'(a,1x,f8.4,2x,f8.4)') "   order 1:", chrom1(:)
+if (mapOrder > 2) then
+  write(6,'(a,1x,f6.2,4x,f6.2)') "   order 2:", chrom2(:)
+endif
+write(6,'(a)') " =========================================================================="
+
 
 write(6,'(a)') ""
 call ptc_end
