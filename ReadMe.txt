@@ -36,8 +36,8 @@ This project includes the following directories and files:
 -----------------------------------
 
 The build instructions given here have been tested only on
-  Mac OS 10.9.5 and Linux .
-With any luck, they will work on other systems.
+  Mac OS 10.9.5 and Red Hat Linux 4.4.7.
+With any luck, these instructions will work on other systems.
 
 To build the code for this project, you can use the cross-platform build
 system CMake. This build system uses the CMakeLists.txt file found in
