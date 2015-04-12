@@ -184,6 +184,8 @@ write(6,'(a)') " ===============================================================
 
 
 write(6,'(a)') ""
+write(6,'(a)') " End PTC computation."
+write(6,'(a)') ""
 call ptc_end
 end program psr_chromaticity
 

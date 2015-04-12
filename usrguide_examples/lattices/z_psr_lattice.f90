@@ -126,7 +126,7 @@ endif
 PSR = .ring.PSR
 call survey(PSR)
 
-PSR%name = " Los Alamos PSR "
+PSR%name = "Los Alamos PSR"
 
 end subroutine build_full_PSR
 
