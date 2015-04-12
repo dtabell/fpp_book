@@ -176,17 +176,17 @@ CONTAINS
     TYPE (fibre), POINTER :: Current
     TYPE (layout), TARGET, intent(inout):: L
     logical(lp) doneit
-    if(lielib_print(12)==1) write(6,*) "Killing Layout",L%name
+    if(lielib_print(12)==1) write(6,*) "Killing Layout '", trim(L%name), "' ..."
     CALL LINE_L(L,doneit)
     nullify(current)
     IF(ASSOCIATED(L%T)) THEN
        CALL kill_NODE_LAYOUT(L%T)  !  KILLING THIN LAYOUT
        nullify(L%T)
-       if(lielib_print(12)==1) WRITE(6,*) " NODE LAYOUT HAS BEEN KILLED "
+       if(lielib_print(12)==1) WRITE(6,*) "  Node layout has been killed."
     ENDIF
     IF(ASSOCIATED(L%DNA)) THEN
        DEALLOCATE(L%DNA)
-       WRITE(6,*) " DNA CONTENT HAS BEEN DEALLOCATED "
+       WRITE(6,*) "  DNA content has been deallocated."
     ENDIF
     !    IF(ASSOCIATED(L%con)) THEN
     !       DEALLOCATE(L%con)
@@ -214,7 +214,8 @@ CONTAINS
        L%N=L%N-1
     END DO
     call de_set_up(L)
-    if(lielib_print(12)==1) WRITE(6,*) 'Layout killed '
+    if(lielib_print(12)==1) WRITE(6,*) "Layout killed."
+    if(lielib_print(12)==1) WRITE(6,*) ""
   END SUBROUTINE kill_layout
 
 
@@ -2379,9 +2380,8 @@ CONTAINS
     IF(ASSOCIATED(L%ORBIT_LATTICE)) THEN
        CALL de_Set_Up_ORBIT_LATTICE(L%ORBIT_LATTICE)  !  KILLING ORBIT LATTICE
        !(NO LINKED LIST DE_SET_UP_... = KILL_... )
-       WRITE(6,*) " ORBIT LATTICE HAS BEEN KILLED "
+       WRITE(6,*) "  Orbit lattice has been killed."
     ENDIF
-
 
     nullify(current)
     Current => L % end      ! end at the end
