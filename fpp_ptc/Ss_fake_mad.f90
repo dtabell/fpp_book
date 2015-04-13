@@ -25,6 +25,7 @@ contains
     call point_m_u(m_u,m_t)
   END subroutine ptc_ini
 
+
   subroutine ptc_ini_no_append()
     implicit none
 
@@ -38,10 +39,14 @@ contains
     call point_m_u(m_u,m_t)
   END subroutine ptc_ini_no_append
 
+
   subroutine ptc_end()
     implicit none
     integer i
 
+    write(6,*) ""
+    write(6,*) "End PTC computation. Cleaning up ..."
+    write(6,*) ""
     call kill_universe(m_t)
     call kill_universe(m_u)
     call kill_tpsa
@@ -49,9 +54,8 @@ contains
     do i=1,size(s_b)
        call nul_coef(s_b(i))
     enddo
+    write(6,*) "Done."
     deallocate(s_b)
-
-
 
     firsttime_coef=.true.
 
