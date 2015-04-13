@@ -1,8 +1,8 @@
 #######################################################################
 ##
-## CMakeLists.txt : lattice source files
+## CMakeLists.txt : lattice source files for PTC example executables
 ##
-## This project contains the code and examples for the book
+## This project contains the source code and examples for the book
 ##
 ## Etienne Forest
 ## From Tracking Code to Analysis

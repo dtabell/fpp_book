@@ -1,8 +1,8 @@
 #######################################################################
 ##
-## CMakeLists.txt : fpp_ptc
+## CMakeLists.txt : source files for FPP/PTC, including complex FPP
 ##
-## Source files for FPP/PTC, including complex FPP.
+## This project contains the source code and examples for the book
 ##
 ## Etienne Forest
 ## From Tracking Code to Analysis
@@ -37,8 +37,8 @@ set(FPP_LIB_FILES
   o_tree_element.f90
 )
 
-# To ensure proper dependency checking, the source files
-# in complex/. need to be visible at this level.
+# To ensure proper dependency checking, the source
+# files in complex/. need to be visible at this level.
 set(COMPLEX_FPP_LIB_FILES
   complex/cb_da_arrays_all.f90
   complex/cc_dabnew.f90
