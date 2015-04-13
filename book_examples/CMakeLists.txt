@@ -34,7 +34,7 @@ set(PTC_PROGRAMS
 
 foreach (p ${PTC_PROGRAMS})
   add_executable(${p} "${p}.f90")
-  target_link_libraries(${p} ptc ptclattices)
+  target_link_libraries(${p} ptc ptc_lattices)
 endforeach (p)
 
 add_subdirectory(als)

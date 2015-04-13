@@ -17,14 +17,14 @@ set(PTC_LATTICE_FILES
   z_als_lattice.f90
 )
 
-add_library(ptclattices
+add_library(ptc_lattices
   ${PTC_LATTICE_FILES}
 )
 
-target_link_libraries(ptclattices ptc)
+target_link_libraries(ptc_lattices ptc)
 
 install(
-  TARGETS ptclattices LIBRARY
+  TARGETS ptc_lattices LIBRARY
   DESTINATION PTC/lib
   ARCHIVE DESTINATION PTC/lib
 )
