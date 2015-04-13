@@ -183,49 +183,6 @@ endif
 write(6,'(a)') " =========================================================================="
 
 
-!write(6,'(a)') ""
-!write(6,'(a)') " End PTC computation."
-!write(6,'(a)') ""
 call ptc_end
 end program psr_chromaticity
-
-
-!! Convert an ASCII string to lowercase letters
-!! adapted from http://www.star.le.ac.uk/~cgp/fortran.html
-!! original author: Clive Page
-!function to_lower(strIn) result(strOut)
-!implicit none
-!
-!character(len=*), intent(in) :: strIn
-!character(len=len(strIn)) :: strOut
-!integer :: i, j
-!
-!do i = 1, len(strIn)
-!  j = iachar(strIn(i:i))
-!  if (j >= iachar("A") .and. j <= iachar("Z")) then
-!    strOut(i:i) = achar(iachar(strIn(i:i)) + 32)
-!  else
-!    strOut(i:i) = strIn(i:i)
-!  end if
-!end do
-!end function to_lower
-!
-!
-!function is_yes(answer) result(yesQ)
-!implicit none
-!
-!character(len=*), intent(in) :: answer
-!character(len=len(answer)) :: lca
-!logical :: yesQ
-!
-!lca = to_lower(answer)
-!
-!yesQ = .false.
-!if (lca .eq. "y" .or. lca .eq. "yes"  .or. &
-!    lca .eq. "t" .or. lca .eq. "true" .or. &
-!    lca .eq. "1") then
-!  yesQ = .true.
-!endif
-!
-!end function is_yes
 
