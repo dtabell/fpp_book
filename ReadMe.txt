@@ -18,19 +18,19 @@
 
 This project includes the following directories and files:
 
-  ReadMe.txt      this ReadMe file
+  ReadMe.txt         this ReadMe file
 
   fpp_ptc            directory for the FPP/PTC library source files
   book_examples      directory for all the example source files
   usrguide_examples  directory for additional example source files,
                        principally from the PTC Library User Guide
 
-  CMakeLists.txt  top-level file used by the CMake build system
+  CMakeLists.txt     top-level file used by the CMake build system
 
-  blank.txt       blank file (is this needed??)
-  intro.txt       instructions that likely refer to the next two files
-  make.bat          and are probably for
-  terminal.lnk      building on Windows
+  blank.txt          blank file (is this needed??)
+  intro.txt          instructions that likely refer to the next two files
+  make.bat             and are probably for
+  terminal.lnk         building on Windows
 
 
  B U I L D   A N D   I N S T A L L
