@@ -2,7 +2,7 @@
 ##
 ## ReadMe.txt : build instructions and other notes
 ##
-## This project contains the code and examples for the book
+## This project contains the source code and examples for the book
 ##
 ## Etienne Forest
 ## From Tracking Code to Analysis
@@ -20,9 +20,10 @@ This project includes the following directories and files:
 
   ReadMe.txt      this ReadMe file
 
-  fpp_ptc         directory for the FPP/PTC library source files
-  book_examples   directory for all the example source files
-  libug_examples  directory for additional example source files
+  fpp_ptc            directory for the FPP/PTC library source files
+  book_examples      directory for all the example source files
+  usrguide_examples  directory for additional example source files,
+                       principally from the PTC Library User Guide
 
   CMakeLists.txt  top-level file used by the CMake build system
 
