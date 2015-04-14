@@ -14,6 +14,7 @@ subroutine build_full_PSR(PSR, useRBends, sextupolesON)
   logical(lp), intent(in), optional :: sextupolesON
 end subroutine build_full_PSR
 end interface
+logical, external :: is_yes
 
 type(layout), pointer :: PSR
 type(internal_state), target :: state
@@ -53,29 +54,26 @@ PSR => m_u%start
 ! Construct the PSR with rectangular bends, or sector bends?
 write(*, '(a)', advance='no') &
   "Use rectangular bends (instead of sector bends)?: "
-read (*, '(l)') useRB
-!read (*, '(a)') answer
-!write(*, '(a1,a)') "=", answer
-!if (is_yes(answer)) then
-!  useRB = .true.
-!else
-!  useRB = .false.
-!endif
-if (useRB) then
+read (*, '(a)') answer
+if (is_yes(answer)) then
+  useRB = .true.
   rs = "r"
   write(*, '(a)') "  Will use rectangular bends."
 else
+  useRB = .false.
   rs = "s"
   write(*, '(a)') "  Will use sector bends."
 endif
 
 ! Turn on the sextupoles?
 write(*, '(a)', advance='no') "Turn on the sextupoles?: "
-read (*, '(l)') sextON
-if (sextON) then
+read (*, '(a)') answer
+if (is_yes(answer)) then
+  sextON = .true.
   wwo = "w/"
   write(*, '(a)') "  Will turn on the sextupoles."
 else
+  sextON = .false.
   wwo = "no"
   write(*, '(a)') "  Will turn off the sextupoles."
 endif
