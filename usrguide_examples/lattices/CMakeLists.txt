@@ -1,8 +1,8 @@
 #######################################################################
 ##
-## CMakeLists.txt : lattice source files for additional examples
+## CMakeLists.txt : lattice source files for user guide examples
 ##
-## This project contains the code and examples for the book
+## This project contains the source code and examples for the book
 ##
 ## Etienne Forest
 ## From Tracking Code to Analysis
@@ -17,14 +17,14 @@ set(USRGUIDE_LATTICE_FILES
   z_psr_lattice.f90
 )
 
-add_library(usrguide_lattices
+add_library(ptc_uglattices
   ${USRGUIDE_LATTICE_FILES}
 )
 
-target_link_libraries(usrguide_lattices ptc)
+target_link_libraries(ptc_uglattices ptc)
 
 install(
-  TARGETS usrguide_lattices LIBRARY
+  TARGETS ptc_uglattices LIBRARY
   DESTINATION PTC/lib
   ARCHIVE DESTINATION PTC/lib
 )

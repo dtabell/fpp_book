@@ -1,6 +1,6 @@
 #######################################################################
 ##
-## CMakeLists.txt : PTC executables for user guide examples
+## CMakeLists.txt : utility source files for user guide examples
 ##
 ## This project contains the source code and examples for the book
 ##
@@ -13,23 +13,19 @@
 ##
 #######################################################################
 
-set(USRGUIDE_PROGRAMS
-  psr_chromaticity
-  psr_tracking
-  ptc_geometry
-  ptc_splitting
+set(USRGUIDE_UTILITY_FILES
+  strings.f90
 )
 
-foreach (p ${USRGUIDE_PROGRAMS})
-  add_executable(${p} "${p}.f90")
-  target_link_libraries(${p} ptc ptc_uglattices ptc_ugutils)
-endforeach (p)
+add_library(ptc_ugutils
+  ${USRGUIDE_UTILITY_FILES}
+)
 
-add_subdirectory(lattices)
-add_subdirectory(utilities)
+#target_link_libraries(ptc_ugutils ptc)
 
 install(
-  TARGETS ${USRGUIDE_PROGRAMS}
-  DESTINATION PTC/bin
+  TARGETS ptc_ugutils LIBRARY
+  DESTINATION PTC/lib
+  ARCHIVE DESTINATION PTC/lib
 )
 
